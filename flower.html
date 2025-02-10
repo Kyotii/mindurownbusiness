@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Valentine's Day, Kirs</title>
+    <style>
+        body {
+            background-color: #FFD9E6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            font-family: "Brush Script MT", cursive;
+        }
+        h1 {
+            font-size: 40px;
+            color: black;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+        #showButton {
+            font-size: 20px;
+            padding: 10px 20px;
+            background-color: #FF4081;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        #showButton:hover {
+            background-color: #E91E63;
+        }
+        canvas {
+            background-color: #FFD9E6;
+            display: none; /* Hide initially */
+        }
+    </style>
+</head>
+<body>
+    <button id="showButton">Click Here for a Surprise!</button>
+    <h1 id="message">Happy Valentine's Day, Kirs!</h1>
+    <canvas id="roseCanvas" width="400" height="500"></canvas>
+
+    <script>
+        const canvas = document.getElementById("roseCanvas");
+        const ctx = canvas.getContext("2d");
+        const message = document.getElementById("message");
+        const button = document.getElementById("showButton");
+
+        // Function to gradually draw the rose with animation
+        function drawAnimatedRose() {
+            let step = 0;
+
+            function drawStep() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                if (step >= 1) drawStem();
+                if (step >= 2) drawLeaf(190, 300, Math.PI / 4);
+                if (step >= 3) drawLeaf(220, 280, -Math.PI / 4);
+                if (step >= 4) drawRose();
+
+                step++;
+                if (step <= 5) {
+                    setTimeout(drawStep, 500); // Delay between drawing steps
+                }
+            }
+
+            drawStep();
+        }
+
+        // Function to show canvas and animate the rose
+        function showRose() {
+            button.style.display = "none"; // Hide button
+            canvas.style.display = "block"; // Show canvas
+            message.style.opacity = 1; // Make text visible
+            drawAnimatedRose(); // Start drawing animation
+        }
+
+        // Function to draw the stem
+        function drawStem() {
+            ctx.strokeStyle = "green";
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(200, 400);
+            ctx.quadraticCurveTo(190, 350, 210, 250);
+            ctx.stroke();
+        }
+
+        // Function to draw a leaf
+        function drawLeaf(x, y, angle) {
+            ctx.fillStyle = "green";
+            ctx.beginPath();
+            ctx.ellipse(x, y, 20, 10, angle, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        // Function to draw petals
+        function drawPetal(x, y, size, angle, color) {
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.ellipse(x, y, size, size * 1.5, angle, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        // Function to draw the rose
+        function drawRose() {
+            drawPetal(200, 200, 30, Math.PI / 4, "red");
+            drawPetal(220, 190, 30, -Math.PI / 4, "red");
+            drawPetal(180, 190, 30, Math.PI / 6, "red");
+            drawPetal(200, 180, 25, Math.PI / 2, "red");
+            drawPetal(210, 170, 20, Math.PI / 3, "red");
+
+            // Draw the center swirl
+            ctx.strokeStyle = "white";
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.arc(200, 180, 10, 0, Math.PI * 2);
+            ctx.stroke();
+        }
+
+        // Attach the button click event to show the rose
+        button.addEventListener("click", showRose);
+    </script>
+</body>
+</html>
